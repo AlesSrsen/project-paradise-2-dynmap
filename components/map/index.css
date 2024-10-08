@@ -1,0 +1,9 @@
+#tdu-leaflet-map {
+  background: #00132f;
+  height: 100%;
+  width: 100%;
+}
+
+#tdu-leaflet-map, .leaflet-control-minimap {
+  background: #00132f;
+}
