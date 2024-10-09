@@ -6,7 +6,7 @@ import { MapContainer } from 'react-leaflet';
 import { TDU2PlayerLayerGroup } from './TDU2PlayerLayerGroup';
 import { TDU2TileLayer } from './TDU2TileLayer';
 
-import { TDU2_MAPS } from '@/lib/constants';
+import { TDU2MapOptions } from '@/lib/constants';
 
 import 'leaflet-rastercoords';
 
@@ -16,9 +16,7 @@ import 'leaflet/dist/leaflet.css';
 
 import './css/map.css';
 
-const Map = ({ gameMap }: { gameMap: 'ibiza' | 'hawaii' }) => {
-  const tduMap = TDU2_MAPS[gameMap];
-
+const Map = ({ tduMap }: { tduMap: TDU2MapOptions }) => {
   return (
     <MapContainer
       crs={CRS.Simple}

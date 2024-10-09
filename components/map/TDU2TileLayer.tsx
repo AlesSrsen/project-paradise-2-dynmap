@@ -18,7 +18,7 @@ export const TDU2TileLayer = ({ tduMap }: { tduMap: TDU2MapOptions }) => {
   const map = useMap();
   const tduMapInfo = tduMap.map;
 
-  const img = tduMapInfo.getCoords();
+  const img = tduMapInfo.maxBounds;
 
   const rc = new RasterCoords(map, img);
 

@@ -10,11 +10,14 @@ import { useMemo } from 'react';
 import dynamic from 'next/dynamic';
 import { notFound } from 'next/navigation';
 import Link from 'next/link';
+import { TDU2_MAPS } from '@/lib/constants';
 
 export default function Home({ params }: { params: { map: string } }) {
   if (params.map !== 'ibiza' && params.map !== 'hawaii') {
     notFound();
   }
+
+  const tduMap = TDU2_MAPS[params.map];
 
   const Map = useMemo(
     () =>
@@ -50,7 +53,7 @@ export default function Home({ params }: { params: { map: string } }) {
       <div className="flex-auto">
         <main className="h-[100%]">
           <div className="bg-white-700 mx-auto w-[100%] h-[100%]">
-            <Map gameMap={params.map} />
+            <Map tduMap={tduMap} />
           </div>
         </main>
         <footer className="h-0"></footer>
