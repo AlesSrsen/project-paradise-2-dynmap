@@ -7,12 +7,13 @@ import * as L from 'leaflet';
 import 'leaflet-rastercoords';
 
 import MiniMap from 'leaflet-minimap';
+import 'leaflet-minimap/dist/Control.MiniMap.min.css';
 
 import 'leaflet/dist/leaflet.css';
 import 'leaflet-defaulticon-compatibility/dist/leaflet-defaulticon-compatibility.css';
 import 'leaflet-defaulticon-compatibility';
 import { useEffect } from 'react';
-import { TDU2MapOptions } from '@/lib/constants';
+import { TDU2MapOptions } from '@/types/tdu2-map';
 
 export const TDU2TileLayer = ({ tduMap }: { tduMap: TDU2MapOptions }) => {
   const map = useMap();
@@ -20,10 +21,12 @@ export const TDU2TileLayer = ({ tduMap }: { tduMap: TDU2MapOptions }) => {
 
   const img = tduMapInfo.maxBounds;
 
-  const rc = new RasterCoords(map, img);
+  const rc = new RasterCoords(map, img, 256, false);
 
   useEffect(() => {
-    map.setMaxBounds(rc.getMaxBounds());
+    const largeMapBounds = rc.getMaxBounds();
+    const paddedBounds = largeMapBounds.pad(1);
+    map.setMaxBounds(paddedBounds);
     map.setMaxZoom(8);
     map.setView(rc.unproject([img[0] / 2, img[1] / 2]));
 
@@ -32,7 +35,11 @@ export const TDU2TileLayer = ({ tduMap }: { tduMap: TDU2MapOptions }) => {
       maxZoom: tduMapInfo.maxZoom,
       bounds: rc.getMaxBounds(),
     });
-    const miniMapOptions: L.MapOptions = {};
+    const miniMapOptions: L.MapOptions = {
+      minZoom: 0,
+      maxZoom: tduMapInfo.maxZoom,
+      // maxBounds: paddedBounds,
+    };
     const miniMap = new MiniMap(tdu2MiniMapTileLayer, {
       toggleDisplay: true,
       mapOptions: miniMapOptions,
