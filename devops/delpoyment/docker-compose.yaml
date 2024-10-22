@@ -1,0 +1,22 @@
+services:
+  dynmap:
+    image: alessrsen/project-paradise-2-dynmap:latest
+    ports:
+      - "3000:3000"
+    environment:
+      - "MAP_HAWAII_API_URL=https://project-paradise-2-dynmap.srsen.me/api/hawaii/player.php"
+      - "MAP_IBIZA_API_URL=https://project-paradise-2-dynmap.srsen.me/api/ibiza/player.php"
+    networks:
+      - hosting_npm
+    restart: always
+    platform: linux/amd64
+  cors-proxy:
+    # Exposes port 8080
+    image: redocly/cors-anywhere
+    restart: always
+    networks:
+      - hosting_npm
+
+networks:
+  hosting_npm:
+    external: true

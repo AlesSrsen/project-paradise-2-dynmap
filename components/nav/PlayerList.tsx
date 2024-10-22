@@ -95,6 +95,7 @@ export function PlayerList({
                     if (markers) {
                       const marker = markers.get(player.name);
                       if (marker && map) {
+                        map.closePopup();
                         map.panTo(marker.getLatLng());
                         marker.openPopup();
                       }

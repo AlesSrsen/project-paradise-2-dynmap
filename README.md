@@ -1,36 +1,44 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Project Paradise 2 Dynmap
 
-## Getting Started
+This project implements a public API exposed by the Project Paradise 2 servers, to show the position of the players on the map.
 
-First, run the development server:
+## Development
+
+For development it is necessary to use CORS proxy, since the API server has origin only for itself.
+
+First launch the CORS proxy:
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+docker compose up -d
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Then start the Next.js project:
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+```bash
+# Install dependencies if not installed yet
+npm i
+# Run the development server
+npm run dev
+```
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## Deployment
 
-## Learn More
+Deployment is done using Docker Image. You can build and push the image with the following command:
 
-To learn more about Next.js, take a look at the following resources:
+```bash
+docker build --platform linux/amd64 -t alessrsen/project-paradise-2-dynmap:latest -t "alessrsen/project-paradise-2-dynmap:$(git rev-parse --short=8 HEAD)" .
+docker push --all-tags alessrsen/project-paradise-2-dynmap
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+Sync public files to the server
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+```bash
+rsync -arv public [ssh-host]:[path]/project-paradise-2-dynmap
+```
 
-## Deploy on Vercel
+> [!NOTE]  
+> Public files are not in this repository, they will be made available to download once I find free hosting for the images.
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+Public files should be cached - for caching use definition in `devops/nginx/npm.nginx.conf`
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+`docker-compose.yaml` with CORS proxy is prepared in `devops/delpoyment/docker-compose.yaml`

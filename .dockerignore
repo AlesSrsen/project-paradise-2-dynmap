@@ -1,1 +1,7 @@
 /ignored
+/utils
+/public/img
+/node_modules
+/.git
+/.next
+/devops
